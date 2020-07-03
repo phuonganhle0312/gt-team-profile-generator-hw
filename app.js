@@ -49,7 +49,7 @@ const questions = [
     {
         type: "confirm",
         message: "Would you like to add another team member?",
-        name: "addmember"
+        name: "addmember",
     },
 
 ];
@@ -65,7 +65,7 @@ function addMembers(response){
             response.email,
             response.github,
         );
-    } else if (response.role == "Engineer") {
+    } else if (response.role === "Engineer") {
         employee = new Engineer(
             response.name,
             response.id,
@@ -82,7 +82,7 @@ function addMembers(response){
     }
 //pushing employee information into employeeInfo array
 employeeData.push(employee)
-}
+
 //checking if user would like to add another member so addMember function runs again
 if (response.addmember) {
     console.log ("Add another member");
@@ -93,8 +93,14 @@ else {
     console.log("Employee information is successfully generated")
 }
 //appending employeeData to output path or team.html
-fs.appendFile(outputPath, render(employeeData), "utf-8");
-
+fs.writeFileSync(outputPath, render(employeeData), "utf-8");
+}
+inquirer
+.prompt(questions)
+.then(addMembers)
+.catch(function (error){
+    console.log(error);
+});
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
