@@ -10,7 +10,97 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+//array of questions to get employee information
+const questions = [
+    {
+        type: "input",
+        message: "Enter team member's name",
+        name: "name",
+    },
+    {
+        type: "list",
+        message: "Select team member's role",
+        choices: ["Intern", "Engineer", "Manager"],
+        name: "role"
+    },
+    {
+        type: "input",
+        message: "Enter team member's id",
+        name: "id",
+    },
+    {
+        type: "input",
+        message: "Enter team member's email",
+        name: "email",
+    },
+    {
+        type: "input",
+        message: "Enter team member's school",
+        name: "school",
+        //Intern specific question
+        when: (response) => response.role === "Intern",
+    },
+    {
+        type: "input",
+        message: "Enter team member's GitHub username",
+        name: "github",
+        when: (response) => response.role === "Engineer",
+    },
+    {
+        type: "confirm",
+        message: "Would you like to add another team member?",
+        name: "addmember",
+    },
 
+];
+//array to store employee information
+const employeeData = [];
+//function to add new members with info provided by user
+function addMembers(response){
+    let employee
+    if (response.role === "Intern") {
+        employee = new Intern(
+            response.name,
+            response.id,
+            response.email,
+            response.github,
+        );
+    } else if (response.role === "Engineer") {
+        employee = new Engineer(
+            response.name,
+            response.id,
+            response.email,
+            response.github,
+        );
+    } else if (response.role === "Manager") {
+        employee = new Manager(
+            response.name,
+            response.id,
+            response.email,
+            response.school
+        );
+    }
+//pushing employee information into employeeInfo array
+employeeData.push(employee);
+
+//checking if user would like to add another member so addMember function runs again
+if (response.addmember) {
+    console.log ("Add another member");
+    return inquirer.prompt(questions).then(addMembers)
+}
+//if not, array will be rendered into HTML file
+else {
+    console.log("Employee information is successfully generated");
+}
+//appending employeeData to output path or team.html
+fs.writeFileSync(outputPath, render(employeeData), "utf-8");
+};
+inquirer
+.prompt(questions)
+.then(addMembers)
+.catch(function (error){
+    console.log(error);
+});
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
