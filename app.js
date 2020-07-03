@@ -81,7 +81,7 @@ function addMembers(response){
         );
     }
 //pushing employee information into employeeInfo array
-employeeData.push(employee)
+employeeData.push(employee);
 
 //checking if user would like to add another member so addMember function runs again
 if (response.addmember) {
@@ -90,11 +90,11 @@ if (response.addmember) {
 }
 //if not, array will be rendered into HTML file
 else {
-    console.log("Employee information is successfully generated")
+    console.log("Employee information is successfully generated");
 }
 //appending employeeData to output path or team.html
 fs.writeFileSync(outputPath, render(employeeData), "utf-8");
-}
+};
 inquirer
 .prompt(questions)
 .then(addMembers)
