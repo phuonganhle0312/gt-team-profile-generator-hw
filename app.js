@@ -54,7 +54,7 @@ const questions = [
 
 ];
 //array to store employee information
-const employeeInfo = [];
+const employeeData = [];
 //function to add new members with info provided by user
 function addMembers(response){
     let employee
@@ -81,7 +81,7 @@ function addMembers(response){
         );
     }
 //pushing employee information into employeeInfo array
-employeeInfo.push(employee)
+employeeData.push(employee)
 }
 //checking if user would like to add another member so addMember function runs again
 if (response.addmember) {
@@ -90,8 +90,11 @@ if (response.addmember) {
 }
 //if not, array will be rendered into HTML file
 else {
-    console.log("Employee information is generated")
+    console.log("Employee information is successfully generated")
 }
+//appending employeeData to output path or team.html
+fs.appendFile(outputPath, render(employeeData), "utf-8");
+
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
