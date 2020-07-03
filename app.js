@@ -47,6 +47,12 @@ const questions = [
         when: (response) => response.role === "Engineer",
     },
     {
+        type: "input",
+        message: "Enter team member's office number",
+        name: "office",
+        when: (response) => response.role === "Manager",
+    },
+    {
         type: "confirm",
         message: "Would you like to add another team member?",
         name: "addmember",
@@ -63,7 +69,7 @@ function addMembers(response){
             response.name,
             response.id,
             response.email,
-            response.github,
+            response.school,
         );
     } else if (response.role === "Engineer") {
         employee = new Engineer(
@@ -77,7 +83,7 @@ function addMembers(response){
             response.name,
             response.id,
             response.email,
-            response.school
+            response.office
         );
     }
 //pushing employee information into employeeInfo array
